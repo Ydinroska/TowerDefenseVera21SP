@@ -26,4 +26,10 @@ public class EnemyPath : MonoBehaviour
     {
         return waypoints[incomingIndex];
     }
+
+    public int GetNumberOfWaypoints()
+    {
+        return waypoints.Count;
+    }
+
 }
