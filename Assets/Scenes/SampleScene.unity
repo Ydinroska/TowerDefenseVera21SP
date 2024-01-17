@@ -303,7 +303,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.4347426, y: -0, z: -0, w: 0.90055484}
-  m_LocalPosition: {x: 0, y: 4.43, z: -5.33}
+  m_LocalPosition: {x: 0, y: 5.11, z: -4.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1484,6 +1484,8 @@ MonoBehaviour:
   projectile: {fileID: 2355240802375707062, guid: 230b486145416cd418abc1df10fcc74c,
     type: 3}
   firingPoint: {fileID: 973162871}
+  firingTimer: 0
+  firingDelay: 1
   enemyLayers:
     serializedVersion: 2
     m_Bits: 64
