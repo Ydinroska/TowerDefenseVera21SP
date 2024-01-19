@@ -9,13 +9,23 @@ public class Enemy : MonoBehaviour
     [SerializeField] float speed = 5.0f;
 
     // get reference to the road
-    [SerializeField] EnemyPath enemyPath; 
+    [SerializeField] EnemyPath enemyPath;
+
+    // health
+    [SerializeField] float maxHealth = 10.0f;
+    private float currentHealth;
+    [SerializeField] HealthBar healthBar;
 
     // remember where to go
     private int currentTargetWaypoint = 0;
 
     private bool hasReachedEnd;
 
+    private void Awake()
+    {
+        //set max health
+        currentHealth = maxHealth;
+    }
 
     private void Update()
     {
@@ -60,5 +70,24 @@ public class Enemy : MonoBehaviour
     {
         enemyPath = incomingPath;
     }
+
+    public void InflictDamage(float incomingDamage)
+    {
+        Debug.Log($"About to take damage: {currentHealth} - {incomingDamage}");
+
+        currentHealth -= incomingDamage;
+
+        // update the healthbar
+        healthBar.UpdateHealthBar(currentHealth, maxHealth);
+
+        // gg wp
+        if(currentHealth <= 0)
+        {
+            // TODO: Reward the player
+            
+            Destroy(this.gameObject);
+        }
+    }
+
 
 }

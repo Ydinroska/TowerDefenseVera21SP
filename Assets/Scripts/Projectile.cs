@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
 {
 
     [SerializeField] float speed = 10f;
+    [SerializeField] float damage = 5f;
 
     private Rigidbody rb;
     private Enemy targetedEnemy;
@@ -41,15 +42,15 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-       //Debug.Log($"I hit something! {other.gameObject.name}");
 
        if(other.gameObject == targetedEnemy.gameObject)
-        {
-            Destroy(targetedEnemy.gameObject);
-            Destroy(this.gameObject);
-        }
+       {
+            targetedEnemy.InflictDamage(damage); 
+       }
+
+       // get destroyed anyway
+        Destroy(this.gameObject);
        
-        //Destroy(this.gameObject);
 
 
 
