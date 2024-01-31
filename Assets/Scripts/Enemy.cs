@@ -11,6 +11,9 @@ public class Enemy : MonoBehaviour
     // get reference to the road
     [SerializeField] EnemyPath enemyPath;
 
+    // hit target (where to hit the enemy)
+    [SerializeField] Transform hitTarget;
+
     // health
     [SerializeField] float maxHealth = 10.0f;
     private float currentHealth;
@@ -87,6 +90,11 @@ public class Enemy : MonoBehaviour
             
             Destroy(this.gameObject);
         }
+    }
+
+    public Transform getHitTarget()
+    {
+        return hitTarget;
     }
 
 

@@ -2,59 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Projectile : MonoBehaviour
 {
-
     [SerializeField] float speed = 10f;
     [SerializeField] float damage = 5f;
 
     private Rigidbody rb;
     private Enemy targetedEnemy;
-
+    private Vector3 lastDirection;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true; // Prevent the Rigidbody from affecting the projectile initially
     }
 
-
-    // Setup the projectile as soon as it is created
     public void Setup(Vector3 enemyDirection, Enemy incomingTargetedEnemy)
     {
-        targetedEnemy = incomingTargetedEnemy;   // who to chase?
-        //Vector3 force = enemyDirection * 5.0f; // calculate force
-        //rb.AddForce(force, ForceMode.Impulse); // apply force
-
+        targetedEnemy = incomingTargetedEnemy; // who to chase?
+        lastDirection = (targetedEnemy.getHitTarget().position - transform.position).normalized;
     }
 
     private void Update()
     {
         if (targetedEnemy) // if the targeted enemy is still alive
         {
-            // travel towards the enemy
+            lastDirection = (targetedEnemy.getHitTarget().position - transform.position).normalized;
             transform.position = Vector3.MoveTowards(
                     transform.position,
-                    targetedEnemy.transform.position,
+                    targetedEnemy.getHitTarget().position, // HERE
                     speed * Time.deltaTime);
-                
         }
+        else if (rb.isKinematic) // Target is gone, and Rigidbody is not yet active
+        {
+            ActivateRigidbody();
+        }
+    }
+
+    private void ActivateRigidbody()
+    {
+        rb.isKinematic = false; // Allow the Rigidbody to be affected by physics
+        rb.velocity = lastDirection * speed; // Continue in the last known direction
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (targetedEnemy != null && other.gameObject == targetedEnemy.gameObject)
+        {
+            targetedEnemy.InflictDamage(damage);
+        }
 
-       if(other.gameObject == targetedEnemy.gameObject)
-       {
-            targetedEnemy.InflictDamage(damage); 
-       }
-
-       // get destroyed anyway
+        // Get destroyed anyway
         Destroy(this.gameObject);
-       
-
-
-
     }
-
-
 }
+
+

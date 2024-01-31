@@ -9,6 +9,8 @@ public class Tower : MonoBehaviour
     [SerializeField] Projectile projectile;
     [SerializeField] Transform firingPoint;
 
+    private bool towerIsActive;
+
     // Timers
     [SerializeField] float firingTimer;
     [SerializeField]float firingDelay = 1.0f;
@@ -22,32 +24,43 @@ public class Tower : MonoBehaviour
     [SerializeField] List<Enemy> enemiesInRange;
     [SerializeField] Enemy targetedEnemy;
 
+    private void Awake()
+    {
+        // initial setup
+        towerIsActive = false;
+    }
+
+
     private void Update()
     {
-        // == SCANNING PART ==
-
-        scanningTimer += Time.deltaTime;
-        if (scanningTimer >= scanningDelay)
+        
+        if (towerIsActive)
         {
+        
+          // == SCANNING PART ==
+
+          scanningTimer += Time.deltaTime;
+          if (scanningTimer >= scanningDelay)
+          {
             scanningTimer = 0;   // reset scanning timer
             ScanForEnemies();    // call the scan function
-        }
+          }
 
 
-        // == FIRING PART ==
+          // == FIRING PART ==
 
-        // if there's a targeted enemy, then increment the timer every frame
-        if(targetedEnemy)
+          // if there's a targeted enemy, then increment the timer every frame
+          if(targetedEnemy)
             firingTimer += Time.deltaTime;
 
-        // if we have reached the firingDelay, then reset the timer and fire
-        if(firingTimer >= firingDelay)
-        {
+          // if we have reached the firingDelay, then reset the timer and fire
+          if(firingTimer >= firingDelay)
+          {
             firingTimer = 0f;
             Fire();            // call the fire function
-        }
-               
+          }
 
+        }
     }
 
 
@@ -96,4 +109,12 @@ public class Tower : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
     }
+
+    public void activateTower()
+    {
+        towerIsActive = true;
+    }
+
+
 }
+
